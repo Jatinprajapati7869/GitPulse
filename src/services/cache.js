@@ -127,9 +127,9 @@ export async function clearCache(username) {
 }
 
 /**
- * Get cache statistics for a username
- * @param {string} username - GitHub username
- * @returns {Promise<{exists: boolean, age?: number, size?: number, daysCount?: number}>}
+ * Retrieve cache metadata for a GitHub username.
+ * @param {string} username - GitHub username whose cache to inspect.
+ * @returns {{exists: boolean, age?: number, size?: number, daysCount?: number, isFresh?: boolean}} If no cache entry exists returns `{ exists: false }`. If an entry exists returns `{ exists: true, age, size, daysCount, isFresh }` where `age` is milliseconds since the entry was generated, `size` is the length in characters of the JSON-serialized `days` array, `daysCount` is the number of day entries, and `isFresh` indicates whether the entry is within the default TTL.
  */
 export async function getCacheInfo(username) {
   const cacheKey = `github_${username}`;
@@ -147,5 +147,4 @@ export async function getCacheInfo(username) {
     isFresh: isFresh(cached.generatedAt),
   };
 }
-
 

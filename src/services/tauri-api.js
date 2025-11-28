@@ -6,10 +6,11 @@
 import { invoke } from '@tauri-apps/api/core';
 
 /**
- * Fetch GitHub contributions using Tauri Rust backend
- * @param {string} username - GitHub username
- * @param {string|null} token - GitHub personal access token (optional)
- * @returns {Promise<Array>} Array of contribution days
+ * Retrieve GitHub contribution data for a user via the Tauri backend.
+ * @param {string} username - GitHub username.
+ * @param {string|null} token - Optional GitHub personal access token; if `null` the token is omitted.
+ * @returns {Array} Array of contribution day objects.
+ * @throws {Error} When the Tauri backend returns an error or the invocation fails.
  */
 export async function fetchContributionsViaTauri(username, token = null) {
   try {
@@ -31,8 +32,8 @@ export async function fetchContributionsViaTauri(username, token = null) {
 }
 
 /**
- * Clear all cached contributions data
- * @returns {Promise<string>} Success message
+ * Clear all cached GitHub contributions stored by the Tauri backend.
+ * @returns {string} Success message.
  */
 export async function clearCache() {
   try {
@@ -43,6 +44,11 @@ export async function clearCache() {
   }
 }
 
+/**
+ * Persist a GitHub personal access token in the Tauri backend.
+ * @param {string} token - The GitHub personal access token to save.
+ * @throws {Error} Rethrows the underlying error if the backend fails to save the token.
+ */
 export async function saveGitHubToken(token) {
   try {
     await invoke('save_github_token', { token });
@@ -52,6 +58,10 @@ export async function saveGitHubToken(token) {
   }
 }
 
+/**
+ * Retrieve the stored GitHub personal access token, if any.
+ * @returns {string|null} The saved GitHub token, or `null` if no token is stored or retrieval fails.
+ */
 export async function getGitHubToken() {
   try {
     return await invoke('get_github_token');
@@ -61,6 +71,11 @@ export async function getGitHubToken() {
   }
 }
 
+/**
+ * Delete the stored GitHub personal access token.
+ *
+ * @throws {Error} The error thrown when the underlying deletion fails; the original error is rethrown.
+ */
 export async function deleteGitHubToken() {
   try {
     await invoke('delete_github_token');

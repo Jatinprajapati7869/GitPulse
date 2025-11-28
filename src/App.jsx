@@ -6,6 +6,11 @@ import { fetchGitHubActivity } from './services/github';
 
 import { getCurrentWindow } from '@tauri-apps/api/window';
 
+/**
+ * Main React component that loads GitHub contribution activity, manages authentication state, and renders the appropriate UI (login, loading, error, or heatmap) with window controls.
+ *
+ * @returns {JSX.Element} A JSX element for the application UI: the Login view when not authenticated, a header with window controls when authenticated, and either a loading indicator, an error view with a Back to Login option, or the Heatmap populated with contribution data.
+ */
 function App() {
   const [activity, setActivity] = useState([]);
   const [loading, setLoading] = useState(true);

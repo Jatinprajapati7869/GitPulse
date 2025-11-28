@@ -19,7 +19,6 @@ export async function fetchContributionsViaTauri(username, token = null) {
     });
 
     if (result.ok && result.data) {
-
       return result.data;
     } else {
       console.error('Tauri fetch error:', result.error);
@@ -35,13 +34,38 @@ export async function fetchContributionsViaTauri(username, token = null) {
  * Clear all cached contributions data
  * @returns {Promise<string>} Success message
  */
-export async function clearCacheViaTauri() {
+export async function clearCache() {
   try {
-    const message = await invoke('clear_cache');
-
-    return message;
+    return await invoke('clear_cache');
   } catch (error) {
     console.error('Failed to clear cache:', error);
+    throw error;
+  }
+}
+
+export async function saveGitHubToken(token) {
+  try {
+    await invoke('save_github_token', { token });
+  } catch (error) {
+    console.error('Failed to save token:', error);
+    throw error;
+  }
+}
+
+export async function getGitHubToken() {
+  try {
+    return await invoke('get_github_token');
+  } catch (error) {
+    // It's normal to fail if no token exists yet
+    return null;
+  }
+}
+
+export async function deleteGitHubToken() {
+  try {
+    await invoke('delete_github_token');
+  } catch (error) {
+    console.error('Failed to delete token:', error);
     throw error;
   }
 }

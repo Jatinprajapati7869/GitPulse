@@ -148,23 +148,4 @@ export async function getCacheInfo(username) {
   };
 }
 
-// Legacy compatibility exports
-export function getCache(key) {
-  const cached = cache.get(key);
-  if (!cached) return null;
-  
-  // Check freshness
-  if (!isFresh(cached.timestamp || cached.generatedAt)) {
-    cache.delete(key);
-    return null;
-  }
-  
-  return cached.data || cached;
-}
 
-export function setCache(key, data) {
-  cache.set(key, {
-    data,
-    timestamp: Date.now(),
-  });
-}

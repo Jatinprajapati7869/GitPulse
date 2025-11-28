@@ -150,13 +150,15 @@ async function fetchViaScraping(username) {
  * Tries GraphQL first (if token available), falls back to scraping
  * @returns {Promise<Array>} Array of contribution days
  */
-export async function fetchGitHubActivity() {
-  // Try to get credentials from environment or localStorage
-  const username = localStorage.getItem('github_username') || 
+export async function fetchGitHubActivity(usernameArg, tokenArg) {
+  // Try to get credentials from arguments, environment or localStorage
+  const username = usernameArg || 
+                   localStorage.getItem('github_username') || 
                    import.meta.env.VITE_GITHUB_USERNAME || 
-                   'YOUR_USERNAME_HERE'; // ⚠️ EDIT THIS or set in localStorage
+                   'YOUR_USERNAME_HERE';
 
-  const token = localStorage.getItem('github_token') || 
+  const token = tokenArg || 
+                localStorage.getItem('github_token') || 
                 import.meta.env.VITE_GITHUB_TOKEN || 
                 null;
 
@@ -248,35 +250,4 @@ function generateMockData() {
   return mockData;
 }
 
-/**
- * Helper to set GitHub credentials in localStorage
- * @param {string} username - GitHub username
- * @param {string|null} token - GitHub personal access token (optional)
- */
-export function setGitHubCredentials(username, token = null) {
-  localStorage.setItem('github_username', username);
-  if (token) {
-    localStorage.setItem('github_token', token);
-  } else {
-    localStorage.removeItem('github_token');
-  }
 
-}
-
-/**
- * Clear cached data and credentials
- */
-export async function clearGitHubData() {
-  const username = localStorage.getItem('github_username');
-  
-  localStorage.removeItem('github_username');
-  localStorage.removeItem('github_token');
-  
-  // Clear disk cache
-  if (username) {
-    const { clearCache } = await import('./cache');
-    await clearCache(username);
-  }
-  
-
-}

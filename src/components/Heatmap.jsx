@@ -2,7 +2,11 @@ import './heatmap.css';
 
 function Heatmap({ data }) {
   if (!data || data.length === 0) {
-    return <div className="heatmap"><p>No contribution data available</p></div>;
+    return (
+      <div className="heatmap">
+        <p>No contribution data available</p>
+      </div>
+    );
   }
 
   // Calculate total contributions
@@ -45,7 +49,7 @@ function Heatmap({ data }) {
   return (
     <div className="heatmap-container">
       <div className="heatmap-header">
-        {totalContributions} contributions in the last year
+        <span>{totalContributions} contributions in the last year</span>
       </div>
       
       <div className="heatmap-body">

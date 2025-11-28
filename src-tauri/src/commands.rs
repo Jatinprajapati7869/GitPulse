@@ -205,3 +205,21 @@ pub async fn clear_cache(app_handle: tauri::AppHandle) -> Result<String, String>
 
     Ok("Cache cleared successfully".to_string())
 }
+
+const SERVICE_NAME: &str = "gitpulse";
+const USER_KEY: &str = "github_token";
+
+#[tauri::command]
+pub async fn save_github_token(token: String) -> Result<(), String> {
+    crate::auth::save_token(SERVICE_NAME, USER_KEY, &token)
+}
+
+#[tauri::command]
+pub async fn get_github_token() -> Result<String, String> {
+    crate::auth::get_token(SERVICE_NAME, USER_KEY)
+}
+
+#[tauri::command]
+pub async fn delete_github_token() -> Result<(), String> {
+    crate::auth::delete_token(SERVICE_NAME, USER_KEY)
+}

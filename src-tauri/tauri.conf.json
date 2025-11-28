@@ -1,10 +1,20 @@
 {
-  "productName": "github-widget",
+  "productName": "GitPulse",
   "version": "0.1.0",
-  "identifier": "com.github.widget",
+  "identifier": "com.gitpulse.widget",
+  "bundle": {
+    "active": true,
+    "targets": [
+      "msi"
+    ],
+    "icon": [
+      "icons/icon.ico",
+      "icons/icon.png"
+    ]
+  },
   "build": {
     "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "npm run build:web",
     "devUrl": "http://localhost:5173",
     "frontendDist": "../dist"
   },

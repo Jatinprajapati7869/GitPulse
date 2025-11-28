@@ -1,5 +1,13 @@
 import './heatmap.css';
 
+/**
+ * Render a GitHub-style contribution heatmap from daily contribution data.
+ *
+ * Displays total contributions, month labels, a grid grouped by weeks, and a legend.
+ *
+ * @param {{date: string, contributionCount: number}[]} data - Array of daily contribution objects ordered chronologically; each item must include `date` (ISO date string) and `contributionCount` (non-negative integer). If `data` is empty or missing, a placeholder message is shown.
+ * @returns {JSX.Element} A React element containing the heatmap visualization.
+ */
 function Heatmap({ data }) {
   if (!data || data.length === 0) {
     return (

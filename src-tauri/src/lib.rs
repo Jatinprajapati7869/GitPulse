@@ -4,6 +4,19 @@ mod auth;
 
 
 
+/// Initializes and runs the Tauri application with registered plugins and exposed commands.
+///
+/// This function builds the Tauri application, registers the opener and filesystem plugins,
+/// exposes the application's command handlers to the frontend, and starts the application
+/// event loop. It will panic if the application fails to run.
+///
+/// # Examples
+///
+/// ```no_run
+/// fn main() {
+///     run();
+/// }
+/// ```
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()

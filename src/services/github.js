@@ -146,9 +146,10 @@ async function fetchViaScraping(username) {
 }
 
 /**
- * Main function to fetch GitHub activity
- * Tries GraphQL first (if token available), falls back to scraping
- * @returns {Promise<Array>} Array of contribution days
+ * Fetch GitHub contribution data for a user, using cache, GraphQL (with token) and scraping fallbacks.
+ * @param {string} [usernameArg] - Optional username override; if omitted, username is resolved from localStorage, environment, or a placeholder.
+ * @param {string} [tokenArg] - Optional GitHub token override; if omitted, token is resolved from localStorage or environment.
+ * @returns {Array<{date: string, contributionCount: number}>} Array of contribution day objects with `date` (YYYY-MM-DD) and `contributionCount`.
  */
 export async function fetchGitHubActivity(usernameArg, tokenArg) {
   // Try to get credentials from arguments, environment or localStorage
@@ -224,8 +225,11 @@ export async function fetchGitHubActivity(usernameArg, tokenArg) {
 }
 
 /**
- * Generate mock contribution data for testing/development
- * @returns {Array} Mock contribution days
+ * Produce 365 days of synthetic GitHub contribution entries ending today.
+ *
+ * Each entry is an object with an ISO date string (`YYYY-MM-DD`) and an integer
+ * `contributionCount` suitable for testing or development UIs.
+ * @returns {Array<{date: string, contributionCount: number}>} Array of 365 daily contribution objects, oldest first and ending with today.
  */
 function generateMockData() {
   const mockData = [];
@@ -249,5 +253,4 @@ function generateMockData() {
   
   return mockData;
 }
-
 

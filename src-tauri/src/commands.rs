@@ -188,7 +188,21 @@ fn get_cache_path(username: &str, app_handle: &tauri::AppHandle) -> Result<PathB
     Ok(app_data_dir.join("cache").join(format!("{}_contributions.json", username)))
 }
 
-/// Clear all cached data
+/// Clears the application's cached contribution data directory.
+///
+/// Attempts to remove and recreate the cache directory stored in the application's
+/// data directory. On success returns a short success message; on failure returns
+/// an error description.
+///
+/// # Examples
+///
+/// ```no_run
+/// # use tauri::AppHandle;
+/// # async fn example(app_handle: AppHandle) {
+/// let res = crate::commands::clear_cache(app_handle).await;
+/// assert!(res.is_ok());
+/// # }
+/// ```
 #[tauri::command]
 pub async fn clear_cache(app_handle: tauri::AppHandle) -> Result<String, String> {
     let app_data_dir = app_handle
@@ -209,16 +223,58 @@ pub async fn clear_cache(app_handle: tauri::AppHandle) -> Result<String, String>
 const SERVICE_NAME: &str = "gitpulse";
 const USER_KEY: &str = "github_token";
 
+/// Saves a GitHub personal access token to the platform's secure storage.
+///
+/// The `token` should be a valid GitHub personal access token string; it will be persisted
+/// using the crate's configured service and user key.
+///
+/// # Examples
+///
+/// ```
+/// let token = "ghp_exampletoken".to_string();
+/// let res = futures::executor::block_on(save_github_token(token));
+/// assert!(res.is_ok());
+/// ```
+///
+/// # Returns
+///
+/// `Ok(())` on success, or `Err(String)` with an error message on failure.
 #[tauri::command]
 pub async fn save_github_token(token: String) -> Result<(), String> {
     crate::auth::save_token(SERVICE_NAME, USER_KEY, &token)
 }
 
+/// Retrieves the stored GitHub personal access token from the platform keyring.
+///
+/// # Returns
+///
+/// `Ok` with the stored GitHub token string, `Err` with an error message if retrieval fails.
+///
+/// # Examples
+///
+/// ```
+/// # async fn example() {
+/// let token = get_github_token().await.unwrap();
+/// assert!(!token.is_empty());
+/// # }
+/// ```
 #[tauri::command]
 pub async fn get_github_token() -> Result<String, String> {
     crate::auth::get_token(SERVICE_NAME, USER_KEY)
 }
 
+/// Deletes the stored GitHub token from the platform keyring for this application.
+///
+/// # Examples
+///
+/// ```
+/// // Run in a synchronous context by creating a Tokio runtime.
+/// let rt = tokio::runtime::Runtime::new().unwrap();
+/// rt.block_on(async {
+///     // Remove the saved token; succeeds with `Ok(())` or returns an error string.
+///     delete_github_token().await.unwrap();
+/// });
+/// ```
 #[tauri::command]
 pub async fn delete_github_token() -> Result<(), String> {
     crate::auth::delete_token(SERVICE_NAME, USER_KEY)

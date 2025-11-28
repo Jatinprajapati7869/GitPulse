@@ -1,0 +1,32 @@
+{
+  "productName": "github-widget",
+  "version": "0.1.0",
+  "identifier": "com.github.widget",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:5173",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "GitHub Widget",
+        "width": 800,
+        "height": 180,
+        "decorations": false,
+        "transparent": true,
+        "alwaysOnTop": false,
+        "skipTaskbar": true,
+        "resizable": false,
+        "minimizable": false,
+        "maximizable": false,
+        "fullscreen": false,
+        "visibleOnAllWorkspaces": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  }
+}
